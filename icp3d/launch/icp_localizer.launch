@@ -1,0 +1,10 @@
+<!-- -->
+<launch>
+
+	<node pkg="icp3d" type="icp_node" name="icp_node" output="screen" clear_params="true">
+		<rosparam command="load" file="$(find icp3d)/config/icp_localizer.yaml" />
+	</node>
+
+
+</launch>
+

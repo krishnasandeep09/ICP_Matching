@@ -1,0 +1,20 @@
+point_cloud_topic: velodyne_points #point cloud ros topic to subscribe to
+imu_topic: imu/data #imu ros topic to subscribe to
+pose_topic: icp_pose #pose ros topic to which to publish
+
+leaf_size: 0.1 #leaf size for voxel grid
+dist_threshold: 0.1 #distance threshold for RASNSAC to consider a point as inlier
+eps_angle: 15 #allowed difference of angles in degrees for perpendicular plane model
+minX: 0.0 #min point of box filter
+minY: -25.0
+minZ: -3.0
+maxX: 50.0 #max point of box filter
+maxY: 25.0
+maxZ: 3.0
+mean_k: 50 #number of neighbors to analyze for each point for noise removal
+std_mul: 1.5 #standard deviation multiplication threshold for noise removal
+
+transformation_epsilon: 0.008 #minimum transformation difference for termination condition
+euclidean_fitness_epsilon: 0.1 #maximum allowed Euclidean error between two consecutive steps in the ICP loop
+max_correspondence_distance: 1.5 #correspondences with higher distances will be ignored
+max_iterations: 75 #max number of registration iterations
