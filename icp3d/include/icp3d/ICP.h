@@ -41,7 +41,6 @@ class ICP3D
         Eigen::Matrix4f prev_transformation; //cumulative transformation until the previous time instance
         bool is_initial, is_imu_start; //boolean to tell if this is 1st iteration of the algo and start of imu reading
         double _prev_acc, _curr_acc; //accleration in consecutive time stamps
-        double _prev_yaw, _curr_yaw; //yaw in consecutive time stamps
         double _prev_imu_time, _curr_imu_time; //consecutive time stamps of imu data 
         double _prev_time_stamp; //time stamp of the previous point cloud
 
