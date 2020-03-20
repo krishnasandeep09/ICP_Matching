@@ -215,7 +215,6 @@ void ICP3D::imuCallback(const sensor_msgs::Imu::ConstPtr& msg)
         _yaw_rate = msg->angular_velocity.z;
 
         _prev_acc = _curr_acc;
-        _prev_yaw = _curr_yaw;
         _prev_imu_time = _curr_imu_time;
     }
 

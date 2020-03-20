@@ -12,3 +12,10 @@ sensor_msgs/Imu
 
 Output:
 geometry_msgs/PoseWithCovarianceStamped
+
+How to use:
+
+1. Clone the repository in to your workspace
+2. catkin_make #compile
+3. Edit the parameters in config/icp_localizer.yaml to your suiting.
+4. roslaunch icp3d icp_localizer.launch #to run the code
