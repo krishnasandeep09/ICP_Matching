@@ -64,7 +64,7 @@ class ICP3D
         double _euclidean_fitness_epsilon; //maximum allowed Euclidean error between two consecutive steps in the ICP loop
         double _max_correspondence_distance; //correspondences with higher distances will be ignored
         double _speed; //speed for initial guess
-        double _diff_yaw; //change in yaw for initial guess
+        double _yaw_rate; //change in yaw for initial guess
 };
 
 #endif
