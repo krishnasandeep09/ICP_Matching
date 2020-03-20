@@ -37,19 +37,6 @@
 
 using namespace std;
 
-/* @brief Converts quaternion to euler */
-double getYaw(geometry_msgs::Quaternion q_msg)
-{
-   tf2::Quaternion quat;
-   tf2::fromMsg(q_msg, quat);
-
-   tf2::Matrix3x3 mat(quat);
-   double roll, pitch, yaw;
-   mat.getRPY(roll, pitch, yaw);
-
-   return yaw;
-}
-
 /* @brief Constructor */
 ICP3D::ICP3D(ros::NodeHandle node, ros::NodeHandle private_nh)
 {
@@ -100,10 +87,8 @@ ICP3D::ICP3D(ros::NodeHandle node, ros::NodeHandle private_nh)
     //initialising values
     _prev_acc = 0.0;
     _curr_acc = 0.0;
-    _prev_yaw = 0.0;
-    _curr_yaw = 0.0;
+    _yaw_rate = 0.0;
     _speed = 0.0;
-    _diff_yaw = 0.0;
 
     is_initial = true;
     is_imu_start = true;
@@ -214,7 +199,6 @@ void ICP3D::imuCallback(const sensor_msgs::Imu::ConstPtr& msg)
     if(is_imu_start)
     {
         _prev_acc = msg->linear_acceleration.x;
-        _prev_yaw = getYaw(msg->orientation);
         _prev_imu_time = msg->header.stamp.toSec();
 
         is_imu_start = false;
@@ -222,14 +206,13 @@ void ICP3D::imuCallback(const sensor_msgs::Imu::ConstPtr& msg)
     else
     {
         _curr_acc = msg->linear_acceleration.x;
-        _curr_yaw = getYaw(msg->orientation);
         _curr_imu_time = msg->header.stamp.toSec();
 
         double del_time = _curr_imu_time - _prev_imu_time;
         double avg_acc = 0.5*(_prev_acc + _curr_acc);
 
         _speed = avg_acc*del_time;
-        _diff_yaw = _curr_yaw - _prev_yaw;
+        _yaw_rate = msg->angular_velocity.z;
 
         _prev_acc = _curr_acc;
         _prev_yaw = _curr_yaw;
@@ -290,7 +273,8 @@ void ICP3D::cloudCallback(const sensor_msgs::PointCloud2::ConstPtr& msg)
 
         double diff_time = msg->header.stamp.toSec() - _prev_time_stamp; //calculating time btw the matching pointclouds
 
-        Eigen::AngleAxisf init_rotation (_diff_yaw, Eigen::Vector3f::UnitZ ());
+        double diff_yaw = diff_time*_yaw_rate;
+        Eigen::AngleAxisf init_rotation (diff_yaw, Eigen::Vector3f::UnitZ ());
         double del_x = diff_time*_speed;
         Eigen::Translation3f init_translation (del_x, 0.0, 0.0);
         Eigen::Matrix4f init_guess = (init_translation * init_rotation).matrix ();
