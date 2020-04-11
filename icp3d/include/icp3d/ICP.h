@@ -23,10 +23,11 @@ class ICP3D
     public:
         ICP3D(ros::NodeHandle node, ros::NodeHandle private_nh);
         ~ICP3D() {};
-        void cloudCallback(const sensor_msgs::PointCloud2::ConstPtr& msg); //point cloud callback
-        void imuCallback(const sensor_msgs::Imu::ConstPtr& msg); //imu data callback
 
     private:
+        void cloudCallback(const sensor_msgs::PointCloud2::ConstPtr& msg); //point cloud callback
+        void imuCallback(const sensor_msgs::Imu::ConstPtr& msg); //imu data callback
+        
         void cropCloud(const pcl::PointCloud<pcl::PointXYZ>::Ptr in_cloud_ptr, pcl::PointCloud<pcl::PointXYZ>::Ptr out_cloud_ptr); //crops cloud using box filter
         void removeNoise(const pcl::PointCloud<pcl::PointXYZ>::Ptr in_cloud_ptr, pcl::PointCloud<pcl::PointXYZ>::Ptr out_cloud_ptr); //removes noise using Statistical outlier removal
         void downsampleCloud(const pcl::PointCloud<pcl::PointXYZ>::Ptr in_cloud_ptr, pcl::PointCloud<pcl::PointXYZ>::Ptr out_cloud_ptr); //downsampling the point cloud using Voxelgrid
